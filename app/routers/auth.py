@@ -75,3 +75,10 @@ async def signup_page(request: Request):
         request=request, 
         name="signup.html",
     )
+
+@auth_router.get("/logout")
+async def logout(request: Request) -> Response:
+    response = RedirectResponse(url="/login", status_code=status.HTTP_303_SEE_OTHER)
+    response.delete_cookie(key="access_token", httponly=True, samesite="lax")
+    flash(request, "Logged out successfully")
+    return response
